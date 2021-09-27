@@ -1,0 +1,15 @@
+# macOS generated files
+.DS_Store
+.Spotlight-V100
+.Trashes
+
+# NodeJS generated files
+node_modules
+.env
+package-lock.json
+dist
+docs
+coverage
+
+# VSCode generated files
+**/.vscode

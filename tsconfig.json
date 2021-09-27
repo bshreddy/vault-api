@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "outDir": "dist",
+        "lib": ["esnext", "dom"],
+        "module": "commonjs",
+        "strict": true,
+        "removeComments": true,
+        "sourceMap": true,
+        "declaration": true,
+        "moduleResolution": "node",
+    },
+    "include": [
+        "lib/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts",
+        "dist",
+        "tests/**/*"
+    ]
+}
