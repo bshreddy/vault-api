@@ -1,8 +1,9 @@
 {
   "name": "vault-api",
   "version": "0.0.1",
-  "description": "NodeJS API for Hashicorp Vault",
+  "description": "NodeJS client for HTTP API for Hashicorp Vault.",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "author": {
     "name": "Sai Hemanth Bheemreddy",
     "url": "https://saihemanthbr.github.io/"
@@ -21,7 +22,9 @@
     "build": "tsc",
     "lint": "eslint .",
     "pretest": "npm run lint && npm run build",
-    "test": "jest"
+    "test": "jest",
+    "prepublish": "npm run build",
+    "prepack": "npm run build"
   },
   "dependencies": {
     "axios": "^0.21.4"

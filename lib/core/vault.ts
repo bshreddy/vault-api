@@ -76,7 +76,7 @@ export class Vault implements IVault {
         }
 
         request(engine, config);
-        const {axiosMethod, path} = (config as RequestConfig);
+        const {axiosMethod, requestPath} = (config as RequestConfig);
 
         if (!axiosMethod) { throw new Error('Vault: Missing required configuration'); }
 
@@ -90,7 +90,7 @@ export class Vault implements IVault {
         // @ts-ignore Some of the axios methods are not available in the typescript typings
         return (await axios({
             method: axiosMethod,
-            url: `${address}/${apiVersion}/${path}`,
+            url: `${address}/${apiVersion}/${requestPath}`,
             headers,
             data: config.data,
         })).data;

@@ -1,5 +1,5 @@
 import {Vault, VaultFunc} from './core/vault';
-import {defaultConfigs} from './config';
+import {defaultConfigs as masterDefaultConfigs} from './config';
 import {DefaultConfig} from './types';
 
 /**
@@ -8,12 +8,12 @@ import {DefaultConfig} from './types';
  * @param {DefaultConfig} defaultConfig The default config for the instance.
  * @returns {VaultFunc} A new instance of Vault.
  */
-function createInstance(defaultConfig: DefaultConfig): VaultFunc {
-    return new Vault({...defaultConfigs, ...defaultConfig}).vault;
+function createInstance(defaultConfigs: DefaultConfig): VaultFunc {
+    return new Vault({...masterDefaultConfigs, ...defaultConfigs}).vault;
 }
 
 // Create the default instance to be exported.
-const vault = createInstance(defaultConfigs);
+export const vault = createInstance(masterDefaultConfigs);
 
 // Expose `createInstance` to allow for custom instances.
 vault.create = createInstance;

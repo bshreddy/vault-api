@@ -7,7 +7,6 @@
 node_modules
 .env
 package-lock.json
-dist
 docs
 coverage
 vault-api-*.tgz

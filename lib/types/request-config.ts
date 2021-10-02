@@ -9,6 +9,7 @@ import Config from './config';
  */
 export interface RequestConfig extends Config {
     axiosMethod?: string,
+    requestPath?: string,
 }
 
 export default RequestConfig;

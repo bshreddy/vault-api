@@ -10,8 +10,12 @@ const axiosMethod: { [key: string]: Method; } = {
 };
 
 export const engine: Engine = function kv(config: RequestConfig): RequestConfig {
-    if (config.method === 'help') { config.path = `${config.path}?help=1`; }
-    if (config.method === 'list') { config.path = `${config.path}?list=true`; }
+    config.requestPath = (config.pathIncludesMount)
+        ? config.path
+        : `${config.mount}/${config.path}`;
+
+    if (config.method === 'help') { config.requestPath = `${config.requestPath}?help=1`; }
+    if (config.method === 'list') { config.requestPath = `${config.requestPath}?list=true`; }
 
     config.axiosMethod = axiosMethod[config.method];
 
