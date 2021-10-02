@@ -1,4 +1,5 @@
-import {Config, DefaultConfig} from '../types';
+import {request} from '../engines';
+import {Config, DefaultConfig, RequestConfig} from '../types';
 
 /* eslint-disable no-unused-vars */
 type FunctionWithoutData = (path: string) => Promise<any>;
@@ -13,8 +14,6 @@ interface IVault {
     help: FunctionWithoutData,
 
     write: FunctionWithData,
-    // login: FunctionWithData,
-    // status: FunctionWithoutData,
 }
 
 export interface VaultFunc extends IVault {
@@ -76,10 +75,8 @@ export class Vault implements IVault {
             throw new Error('Vault: Missing required configuration');
         }
 
-        // #TODO: Update this
-        // run(engine, config);
-
-        const {axiosMethod} = {axiosMethod: 'get'};
+        request(engine, config);
+        const {axiosMethod, path} = (config as RequestConfig);
 
         if (!axiosMethod) { throw new Error('Vault: Missing required configuration'); }
 
@@ -93,7 +90,7 @@ export class Vault implements IVault {
         // @ts-ignore Some of the axios methods are not available in the typescript typings
         return (await axios({
             method: axiosMethod,
-            url: `${address}/${apiVersion}/${config.path}`,
+            url: `${address}/${apiVersion}/${path}`,
             headers,
             data: config.data,
         })).data;

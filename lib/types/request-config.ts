@@ -1,9 +1,9 @@
 import Config from './config';
 
 /**
- * @interface VaultRequestConfig
+ * @interface RequestConfig
  * @description Configuration used for Axios requests.
- * @extends VaultConfig
+ * @extends Config
  *
  * @property {string} [axiosMethod] - Axios request method.
  */
