@@ -1,9 +1,10 @@
 import {RequestConfig, Engine} from '../types';
 import {engine as kv} from './kv';
+import {engine as kv2} from './kv2';
 
 // eslint-disable-next-line no-unused-vars
 const engines: { [key: string]: Engine } = {
-    kv,
+    kv, kv2
 };
 
 export function register(name: string, engine: Engine): void {
