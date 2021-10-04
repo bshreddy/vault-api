@@ -14,3 +14,6 @@ vault-api-*.tgz
 
 # VSCode generated files
 **/.vscode
+
+# Miscellaneous
+TODO.md
