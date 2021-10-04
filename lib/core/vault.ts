@@ -75,7 +75,12 @@ export class Vault implements IVault {
             throw new Error('Vault: Missing required configuration');
         }
 
-        request(engine, config);
+        if (config.method === 'help') {
+            (config as RequestConfig).requestPath = (config.pathIncludesMount)
+                ? `${config.path}?help=1`
+                : `${config.mount}/${config.path}?help=1`;
+        } else {request(engine, config);}
+
         const {axiosMethod, requestPath} = (config as RequestConfig);
 
         if (!axiosMethod) { throw new Error('Vault: Missing required configuration'); }

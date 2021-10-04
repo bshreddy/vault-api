@@ -5,8 +5,7 @@ const axiosMethod: { [key: string]: Method; } = {
     read: 'get',
     list: 'get',
     'delete': 'delete',
-    write: 'post',
-    help: 'get',
+    write: 'post'
 };
 
 export const engine: Engine = function kv(config: RequestConfig): RequestConfig {
@@ -14,7 +13,6 @@ export const engine: Engine = function kv(config: RequestConfig): RequestConfig 
         ? config.path
         : `${config.mount}/${config.path}`;
 
-    if (config.method === 'help') { config.requestPath = `${config.requestPath}?help=1`; }
     if (config.method === 'list') { config.requestPath = `${config.requestPath}?list=true`; }
 
     config.axiosMethod = axiosMethod[config.method];
