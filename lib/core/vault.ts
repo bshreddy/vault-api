@@ -83,7 +83,7 @@ export class Vault implements IVault {
 
         const {axiosMethod, requestPath} = (config as RequestConfig);
 
-        if (!axiosMethod) { throw new Error('Vault: Missing required configuration'); }
+        if (!axiosMethod || !requestPath) { throw new Error('Vault: Missing required configuration'); }
 
         const headers: {[key: string]: any} = {
             'X-Vault-Token': token,
