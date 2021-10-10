@@ -1,8 +1,8 @@
 import {execSync} from 'child_process';
+import {getPathForMock} from '../utils';
 
 export function writeData(vaultPath: string, filePath: string, isKV = false): void {
-    filePath = `${__dirname}/../mocks/${filePath}`;
     const cmd = (isKV) ? 'kv put' : 'write';
 
-    console.log(execSync(`vault ${cmd} ${vaultPath} @${filePath}`, {encoding: 'utf8'}));
+    console.log(execSync(`vault ${cmd} ${vaultPath} @${getPathForMock(filePath)}`, {encoding: 'utf8'}));
 }
