@@ -4,8 +4,12 @@ export function getPathForMock(filePath: string): string {
     return `${__dirname}/../mocks/${filePath}`;
 }
 
+export function readMock(filePath: string): any {
+    return fs.readFileSync(getPathForMock(filePath), {encoding: 'utf8'});
+}
+
 export function parseMock(filePath: string): any {
-    return JSON.parse(fs.readFileSync(getPathForMock(filePath), {encoding: 'utf8'}));
+    return JSON.parse(readMock(filePath));
 }
 
 export * from './to-match-schema';
