@@ -66,10 +66,8 @@ export class Vault implements IVault {
     private async _vault(config: Config): Promise<any> {
         config = {...this.defaults, ...config};
         const {axios, apiVersion, engine} = config;
-        const address = typeof this.defaults.address === 'function' ? this.defaults.address() : this.defaults.address;
-        const token = typeof this.defaults.token === 'function'
-            ? this.defaults.token(config)
-            : this.defaults.token;
+        const address = typeof config.address === 'function' ? config.address() : config.address;
+        const token = typeof config.token === 'function' ? config.token(config) : config.token;
 
         if (!axios || !address || !apiVersion || !token || !engine) {
             throw new Error('Vault: Missing required configuration');
@@ -93,11 +91,16 @@ export class Vault implements IVault {
         if (config.isVaultRequest) { headers['X-Vault-Request'] = 'true'; }
 
         // @ts-ignore Some of the axios methods are not available in the typescript typings
-        return (await axios({
+        const res = await axios({
             method: axiosMethod,
             url: `${address}/${apiVersion}/${requestPath}`,
             headers,
             data: config.data,
-        })).data;
+        });
+
+        return {
+            ...res.data,
+            statusCode: res.status
+        };
     }
 }
