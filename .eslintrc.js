@@ -107,6 +107,6 @@ module.exports = {
                 'ts-check': 'allow-with-description',
             }
         ],
-        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-explicit-any': 'off'
     }
 };
