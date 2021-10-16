@@ -1,7 +1,8 @@
 import * as fs from 'fs';
+import * as path from 'path';
 
 export function getPathForMock(filePath: string): string {
-    return `${__dirname}/../mocks/${filePath}`;
+    return path.join(__dirname, '..', 'mocks', filePath);
 }
 
 export function readMock(filePath: string): string {
