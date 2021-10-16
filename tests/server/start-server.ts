@@ -1,7 +1,7 @@
 import {exec} from 'child_process';
 import {createInterface} from 'readline';
-import {VaultServer} from '.';
 import {delay} from '../../lib/utils/index';
+import {VaultServer} from '.';
 
 export async function startServer(): Promise<VaultServer | null> {
     let token: string | undefined;

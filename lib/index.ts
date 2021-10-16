@@ -1,6 +1,6 @@
-import {Vault, VaultFunc} from './core/vault';
 import {defaultConfigs as masterDefaultConfigs} from './config';
-import {DefaultConfig} from './types';
+import {Vault} from './core/vault';
+import {DefaultConfig, VaultFunc} from './types';
 
 /**
  * Create an instance of Vault.

@@ -1,6 +1,6 @@
-import {RequestConfig, Engine} from '../types';
+import {RequestConfig, Engine, Dictionary} from '../types';
 
-const axiosMethod: { [key: string]: string; } = {
+const axiosMethod: Dictionary<string> = {
     config: 'get',
     setConfig: 'post',
     read: 'get',
@@ -15,7 +15,7 @@ const axiosMethod: { [key: string]: string; } = {
     writeMetadata: 'post'
 };
 
-const prePath: { [key: string]: string; } = {
+const prePath: Dictionary<string> = {
     config: 'config',
     setConfig: 'config',
     read: 'data',

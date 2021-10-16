@@ -1,7 +1,7 @@
 import vault from '../../lib';
 import {enableEngine, writeData, readData} from '../server';
-import {KVv1Schema} from './schemas/kv-v1-schema';
 import {parseMock, toMatchSchema} from '../utils';
+import {KVv1Schema} from './schemas/kv-v1-schema';
 
 expect.extend({toMatchSchema});
 

@@ -1,18 +1,8 @@
 import {request} from '../engines';
-import {Config, DefaultConfig, RequestConfig} from '../types';
-
-/* eslint-disable no-unused-vars */
-export interface VaultFunc{
-    (config: Config): Promise<any>,
-    create?: (defaultConfig: DefaultConfig) => VaultFunc;
-}
-/* eslint-enable no-unused-vars */
+import {Config, DefaultConfig, Dictionary, RequestConfig, VaultFunc, VaultResponse} from '../types';
 
 export class Vault {
     private defaults: DefaultConfig;
-
-    private methodsWithoutData = ['read', 'list', 'delete', 'help'];
-    private methodsWithData = ['write'];
 
     public vault!: VaultFunc;
 
@@ -22,7 +12,7 @@ export class Vault {
         this.vault = Object.assign(this._vault.bind(this), {});
     }
 
-    private async _vault(config: Config): Promise<any> {
+    private async _vault(config: Config): Promise<VaultResponse> {
         config = {...this.defaults, ...config};
         const {axios, apiVersion, engine} = config;
         const address = typeof config.address === 'function' ? config.address() : config.address;
@@ -42,7 +32,7 @@ export class Vault {
 
         if (!axiosMethod || !requestPath) { throw new Error('Vault: Missing required configuration'); }
 
-        const headers: {[key: string]: any} = {
+        const headers: Dictionary<any> = {
             'X-Vault-Token': token,
             ...config.headers,
         };

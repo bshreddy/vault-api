@@ -3,7 +3,7 @@ module.exports = {
         node: true,
         'jest/globals': true
     },
-    'extends': ['plugin:@typescript-eslint/recommended', 'plugin:jest/recommended'],
+    'extends': ['plugin:@typescript-eslint/recommended', 'plugin:jest/recommended', 'plugin:import/recommended'],
     parser: '@typescript-eslint/parser',
     overrides: [
         {
@@ -90,6 +90,14 @@ module.exports = {
         'max-statements': ['warn', 25],
         'one-var-declaration-per-line': ['error', 'initializations'],
         'eol-last': ['warn'],
+        'import/no-named-as-default': 'off',
+        'import/order': ['error', {
+            'newlines-between': 'never',
+            alphabetize: {
+                order: 'asc',
+                caseInsensitive: true,
+            },
+        }],
         '@typescript-eslint/ban-ts-comment': [
             'error',
             {
@@ -99,6 +107,6 @@ module.exports = {
                 'ts-check': 'allow-with-description',
             }
         ],
-        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-explicit-any': 'off'
     }
 };

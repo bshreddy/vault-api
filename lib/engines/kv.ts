@@ -1,7 +1,7 @@
 import {Method} from 'axios';
-import {RequestConfig, Engine} from '../types';
+import {RequestConfig, Engine, Dictionary} from '../types';
 
-const axiosMethod: { [key: string]: Method; } = {
+const axiosMethod: Dictionary<Method> = {
     read: 'get',
     list: 'get',
     'delete': 'delete',
