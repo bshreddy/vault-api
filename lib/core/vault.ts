@@ -2,9 +2,6 @@ import {request} from '../engines';
 import {Config, DefaultConfig, RequestConfig} from '../types';
 
 /* eslint-disable no-unused-vars */
-// type FunctionWithoutData = (path: string) => Promise<any>;
-// type FunctionWithData = (path: string, data: any) => Promise<any>;
-
 export interface VaultFunc{
     (config: Config): Promise<any>,
     create?: (defaultConfig: DefaultConfig) => VaultFunc;
