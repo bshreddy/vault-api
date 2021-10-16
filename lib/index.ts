@@ -1,5 +1,5 @@
-import {Vault, VaultFunc} from './core/vault';
 import {defaultConfigs as masterDefaultConfigs} from './config';
+import {Vault, VaultFunc} from './core/vault';
 import {DefaultConfig} from './types';
 
 /**

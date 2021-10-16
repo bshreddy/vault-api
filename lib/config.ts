@@ -1,7 +1,6 @@
-import axios from 'axios';
 import * as fs from 'fs';
-
-import {DefaultConfig, Config} from './types';
+import axios from 'axios';
+import {Config, DefaultConfig} from './types';
 
 export const defaultConfigs: DefaultConfig = {
     axios,
