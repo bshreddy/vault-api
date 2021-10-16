@@ -1,9 +1,9 @@
-import {RequestConfig, Engine} from '../types';
+import {RequestConfig, Engine, Dictionary} from '../types';
 import {engine as kv} from './kv';
 import {engine as kv2} from './kv2';
 
 // eslint-disable-next-line no-unused-vars
-const engines: { [key: string]: Engine } = {
+const engines: Dictionary<Engine> = {
     kv, kv2
 };
 

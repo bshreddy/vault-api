@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import {AxiosInstance} from 'axios';
 import Config from './config';
+import {Dictionary} from '.';
 
 /**
  * @interface DefaultConfig
@@ -12,7 +13,7 @@ import Config from './config';
  * @property {string} [tokenPath] - Path to the vault-token file.
  * @property {string | ((config: VaultConfig) => string)} [token] - Vault token.
  * @property {string} [engine] - Vault Secrets Engine. (This will be automatically detected in the future)
- * @property {[key: string]: any} [headers] - Headers to be sent with every request.
+ * @property {Dictionary} [headers] - Headers to be sent with every request.
  * @property {boolean} [pathIncludesMount] - Whether the given path includes the mount point or not.
  * @property {boolean} [isVaultRequest] - Whether `X-Vault-Request` header should be sent with every request or not.
  *
@@ -34,7 +35,7 @@ export interface DefaultConfig {
     tokenPath?: string,
     token?: string | ((config: Config) => string),
     engine?: string,
-    headers?: { [key: string]: any },
+    headers?: Dictionary<any>,
 
     // Options
     pathIncludesMount?: boolean,

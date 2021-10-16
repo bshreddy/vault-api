@@ -32,7 +32,7 @@ export class Vault {
 
         if (!axiosMethod || !requestPath) { throw new Error('Vault: Missing required configuration'); }
 
-        const headers: {[key: string]: any} = {
+        const headers: Dictionary<any> = {
             'X-Vault-Token': token,
             ...config.headers,
         };
