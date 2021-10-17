@@ -1,4 +1,3 @@
-import { defaultConfigs } from '../../config';
 import {RequestConfig, Engine, Dictionary, Config} from '../../types';
 import {engine as kv} from './kv';
 import {engine as kv2} from './kv2';
@@ -22,7 +21,7 @@ export function request(name: string, config: RequestConfig): RequestConfig {
     return engines[name](config);
 }
 
-// Switch to using 'system' engine later
+// TODO: Switch to using 'system' engine later
 async function getMounts(config: Config): Promise<void> {
     const {axios, apiVersion, isVaultRequest} = config;
     const address = typeof config.address === 'function' ? await config.address() : config.address;
@@ -55,14 +54,12 @@ async function getMounts(config: Config): Promise<void> {
     console.log({mounts});
 }
 
-export async function getEngineName(config: Config): Promise<string> {
+export async function getEngineName(config: Config): Promise<string | undefined> {
     const address = typeof config.address === 'function' ? await config.address() : config.address;
-
-    if (!address) { return 'kv'; }
-    console.log(!mounts[address]);
-    if (!mounts[address]) { await getMounts(config); }
-
     const mount = (config.pathIncludesMount) ? config.path.split('/')[0] : config.mount;
+
+    if (!address) { return; }
+    if (!mounts[address] || !mounts[address][`${mount}/`]) { await getMounts(config); }
 
     config.engine = mounts[address][`${mount}/`];
 
@@ -72,10 +69,3 @@ export async function getEngineName(config: Config): Promise<string> {
 export function invalidateMountsCache(): void {
     mounts = {};
 }
-
-getEngineName({
-    ...defaultConfigs,
-    path: 'secret/sh.bheemreddy/secret',
-    method: 'read',
-    tokenPath: `${process.env.HOME}/.vault-token`
-}).then(console.log);
