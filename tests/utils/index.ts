@@ -6,7 +6,7 @@ export function getPathForMock(filePath: string): string {
 }
 
 export function readMock(filePath: string): string {
-    return fs.readFileSync(getPathForMock(filePath), {encoding: 'utf8'});
+    return fs.readFileSync(getPathForMock(filePath), 'utf8');
 }
 
 export function parseMock(filePath: string): any {
