@@ -12,12 +12,14 @@
   "homepage": "https://github.com/SaiHemanthBR/vault-api#readme",
   "keywords": [
     "vault",
-    "hashicorp",
-    "hashivault",
-    "vaultproject",
     "secrets",
     "manage",
-    "secret management"
+    "hashicorp",
+    "hashicorp-vault",
+    "vault-api",
+    "secrets-management",
+    "vaultproject",
+    "hashivault"
   ],
   "bugs": {
     "url": "https://github.com/SaiHemanthBR/vault-api/issues"
