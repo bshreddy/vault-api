@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import axios from 'axios';
-import {getEngineName} from './core/engines';
+import {getEngineName} from './core/mounts';
 import {Config, DefaultConfig} from './types';
 
 export const defaultConfigs: DefaultConfig = {
@@ -15,6 +15,5 @@ export const defaultConfigs: DefaultConfig = {
     engine: getEngineName,
     headers: {},
 
-    pathIncludesMount: true,
     isVaultRequest: true,
 };

@@ -9,12 +9,8 @@ const axiosMethod: Dictionary<Method> = {
 };
 
 export const engine: Engine = function kv(config: RequestConfig): RequestConfig {
-    config.requestPath = (config.pathIncludesMount)
-        ? config.path
-        : `${config.mount}/${config.path}`;
-
+    config.requestPath = config.path;
     if (config.method === 'list') { config.requestPath = `${config.requestPath}?list=true`; }
-
     config.axiosMethod = axiosMethod[config.method];
 
     return config;

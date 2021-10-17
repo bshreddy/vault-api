@@ -31,14 +31,11 @@ const prePath: Dictionary<string> = {
 };
 
 export const engine: Engine = function kv(config: RequestConfig): RequestConfig {
-    if (config.pathIncludesMount) {
-        const splitPath = config.path.split('/');
+    const splitPath = config.path.split('/');
+    const mount = splitPath[0];
 
-        config.mount = splitPath[0];
-        config.path = splitPath.slice(1).join('/');
-    }
-
-    config.requestPath = `${config.mount}/${prePath[config.method]}/${config.path}`;
+    config.path = splitPath.slice(1).join('/');
+    config.requestPath = `${mount}/${prePath[config.method]}/${config.path}`;
     config.axiosMethod = axiosMethod[config.method];
 
     return config;

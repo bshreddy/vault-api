@@ -27,19 +27,18 @@ import {Dictionary} from '.';
  */
 export interface DefaultConfig {
     // Main configs
-    axios?: AxiosInstance,
+    axios?: AxiosInstance;
 
     // API configs
-    address?: string | (() => Promise<string | undefined>),
-    apiVersion?: string,
-    tokenPath?: string,
-    token?: string | ((config: Config) => Promise<string | undefined>),
-    engine?: string | ((config: Config) => Promise<string | undefined>),
-    headers?: Dictionary<any>,
+    address?: string | ((config: Config) => Promise<string | undefined>);
+    apiVersion?: string;
+    tokenPath?: string;
+    token?: string | ((config: Config) => Promise<string | undefined>);
+    engine?: string | ((config: Config) => Promise<string | undefined>);
+    headers?: Dictionary<any>;
 
     // Options
-    pathIncludesMount?: boolean,
-    isVaultRequest?: boolean,
+    isVaultRequest?: boolean;
 }
 
 export default DefaultConfig;
