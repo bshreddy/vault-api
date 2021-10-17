@@ -1,4 +1,4 @@
-import {Config, DefaultConfig, Dictionary, RequestConfig, VaultFunc, VaultResponse} from '../types';
+import {Config, DefaultConfig, RequestConfig, VaultFunc, VaultResponse} from '../types';
 import {request} from './engines';
 
 export class Vault {
@@ -13,41 +13,50 @@ export class Vault {
     }
 
     private async _vault(config: Config): Promise<VaultResponse> {
+        // Merge the config with the defaults
         config = {...this.defaults, ...config};
-        const {axios, apiVersion} = config;
-        const address = typeof config.address === 'function' ? await config.address() : config.address;
-        const token = typeof config.token === 'function' ? await config.token(config) : config.token;
-        const engine = typeof config.engine === 'function' ? await config.engine(config) : config.engine;
 
+        // Convert all functional configs to values and sanatize
+        config.path = config.path.replace(/^\//, '').replace(/\/$/, '');
+        config.apiVersion = config.apiVersion?.replace(/^\//, '').replace(/\/$/, '');
+        config.address = typeof config.address === 'function' ? await config.address(config) : config.address;
+        config.address = config.address?.replace(/^\//, '').replace(/\/$/, '');
+        config.token = typeof config.token === 'function' ? await config.token(config) : config.token;
+        config.engine = typeof config.engine === 'function' ? await config.engine(config) : config.engine;
+
+        const {axios, address, apiVersion, token, engine, data} = config;
+
+        // Validate the configs
         if (!axios || !address || !apiVersion || !token || !engine) {
-            throw new Error('Vault: Missing required configuration');
+            throw new Error(`Vault: Missing required configuration\n${config}`);
         }
 
+        // Get the request configs
         if (config.method === 'help') {
-            (config as RequestConfig).requestPath = (config.pathIncludesMount)
-                ? `${config.path}?help=1`
-                : `${config.mount}/${config.path}?help=1`;
+            (config as RequestConfig).requestPath = `${config.path}?help=1`;
         } else {request(engine, config);}
 
+        // Validate the request configs
         const {axiosMethod, requestPath} = (config as RequestConfig);
 
-        if (!axiosMethod || !requestPath) { throw new Error('Vault: Missing required configuration'); }
+        if (!axiosMethod || !requestPath) {
+            throw new Error(`Vault: Missing required configuration\n${config}`);
+        }
 
-        const headers: Dictionary<any> = {
-            'X-Vault-Token': token,
-            ...config.headers,
-        };
-
-        if (config.isVaultRequest) { headers['X-Vault-Request'] = 'true'; }
-
+        // Send request
         // @ts-ignore Some of the axios methods are not available in the typescript typings
         const res = await axios({
             method: axiosMethod,
             url: `${address}/${apiVersion}/${requestPath}`,
-            headers,
-            data: config.data,
+            headers: {
+                'X-Vault-Token': token,
+                ...config.headers,
+                ...(config.isVaultRequest ? {'X-Vault-Request': 'true'} : {}),
+            },
+            data,
         });
 
+        // Return the response
         return {
             ...res.data,
             statusCode: res.status

@@ -12,7 +12,6 @@ import DefaultConfig from './default-config';
 export interface Config extends DefaultConfig {
     method: string,
     path: string,
-    mount?: string,
     data?: any,
 }
 
