@@ -5,7 +5,7 @@ export const defaultConfigSchema = Joi.object({
     address: Joi.function(),
     apiVersion: Joi.string().valid('v1'),
     token: Joi.function(),
-    engine: Joi.string().valid('kv'),
+    engine: Joi.function(),
     headers: Joi.object(),
     pathIncludesMount: Joi.bool().valid(true),
     isVaultRequest: Joi.bool().valid(true),

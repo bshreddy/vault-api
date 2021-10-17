@@ -51,7 +51,6 @@ async function getMounts(config: Config): Promise<void> {
     });
 
     mounts[address] = secret;
-    console.log({mounts});
 }
 
 export async function getEngineName(config: Config): Promise<string | undefined> {

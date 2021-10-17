@@ -4,24 +4,25 @@ import {defaultConfigSchema, defaultConfigStaticSchema} from './schemas/default-
 
 expect.extend({toMatchSchema});
 
-test('defaultConfigs Schema', () => {
+test('defaultConfigs Schema', async () => {
+    //@ts-ignore address will be a Function here.
     expect(defaultConfigs).toMatchSchema(defaultConfigSchema);
 
     //@ts-ignore address will be a Function here.
-    expect(defaultConfigs.address()).toBe(process.env.VAULT_ADDR);
+    expect(await defaultConfigs.address()).toBe(process.env.VAULT_ADDR);
 });
 
-test('defaultConfigs with tokenPath set', () => {
+test('defaultConfigs with tokenPath set', async () => {
     const configs = {
         ...defaultConfigs,
         tokenPath: getPathForMock('vault-token')
     };
 
     //@ts-ignore token will be a Function here.
-    expect(configs.token(configs)).toBe('s.vaultTokenJestTest');
+    expect(await configs.token(configs)).toBe('s.vaultTokenJestTest');
 });
 
-test('defaultConfigs without env.VAULT_TOKEN and env.VAULT_ADDR', () => {
+test('defaultConfigs without env.VAULT_TOKEN and env.VAULT_ADDR', async () => {
     const vaultToken = process.env.VAULT_TOKEN;
     const vaultAddr = process.env.VAULT_ADDR;
 
@@ -29,10 +30,10 @@ test('defaultConfigs without env.VAULT_TOKEN and env.VAULT_ADDR', () => {
     delete process.env.VAULT_ADDR;
 
     //@ts-ignore token will be a Function here.
-    expect(defaultConfigs.token(defaultConfigs)).toBe('');
+    expect(await defaultConfigs.token(defaultConfigs)).toBeUndefined();
 
     //@ts-ignore address will be a Function here.
-    expect(defaultConfigs.address()).toBe('');
+    expect(await defaultConfigs.address()).toBeUndefined();
 
     process.env.VAULT_TOKEN = vaultToken;
     process.env.VAULT_ADDR = vaultAddr;
