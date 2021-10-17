@@ -1,4 +1,4 @@
-import {RequestConfig, Engine, Dictionary} from '../types';
+import {RequestConfig, Engine, Dictionary} from '../../types';
 
 const axiosMethod: Dictionary<string> = {
     config: 'get',
