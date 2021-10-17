@@ -1,6 +1,6 @@
 {
   "name": "vault-api",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "description": "NodeJS client for HTTP API for Hashicorp Vault.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
