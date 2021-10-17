@@ -1,17 +1,18 @@
 import * as fs from 'fs';
 import axios from 'axios';
+import {getEngineName} from './core/engines';
 import {Config, DefaultConfig} from './types';
 
 export const defaultConfigs: DefaultConfig = {
     axios,
 
-    address: () => process.env.VAULT_ADDR ?? '',
+    address: async () => process.env.VAULT_ADDR ?? '',
     apiVersion: 'v1',
-    token(config: Config): string {
+    async token(config: Config): Promise<string> {
         if (config.tokenPath) { return fs.readFileSync(config.tokenPath, 'utf8'); }
         return process.env.VAULT_TOKEN ?? '';
     },
-    engine: 'kv',
+    engine: getEngineName,
     headers: {},
 
     pathIncludesMount: true,
