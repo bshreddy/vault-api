@@ -30,11 +30,11 @@ export interface DefaultConfig {
     axios?: AxiosInstance,
 
     // API configs
-    address?: string | (() => string),
+    address?: string | (() => Promise<string>),
     apiVersion?: string,
     tokenPath?: string,
-    token?: string | ((config: Config) => string),
-    engine?: string,
+    token?: string | ((config: Config) => Promise<string>),
+    engine?: string | ((config: Config) => Promise<string>),
     headers?: Dictionary<any>,
 
     // Options

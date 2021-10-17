@@ -1,5 +1,5 @@
-import {request} from '../engines';
 import {Config, DefaultConfig, Dictionary, RequestConfig, VaultFunc, VaultResponse} from '../types';
+import {request} from './engines';
 
 export class Vault {
     private defaults: DefaultConfig;
@@ -14,9 +14,10 @@ export class Vault {
 
     private async _vault(config: Config): Promise<VaultResponse> {
         config = {...this.defaults, ...config};
-        const {axios, apiVersion, engine} = config;
-        const address = typeof config.address === 'function' ? config.address() : config.address;
-        const token = typeof config.token === 'function' ? config.token(config) : config.token;
+        const {axios, apiVersion} = config;
+        const address = typeof config.address === 'function' ? await config.address() : config.address;
+        const token = typeof config.token === 'function' ? await config.token(config) : config.token;
+        const engine = typeof config.engine === 'function' ? await config.engine(config) : config.engine;
 
         if (!axios || !address || !apiVersion || !token || !engine) {
             throw new Error('Vault: Missing required configuration');
