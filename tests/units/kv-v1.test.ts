@@ -1,4 +1,5 @@
 import vault from '../../lib';
+import VaultInvalidConfigError from '../../lib/helper/invalid-config-error';
 import {enableEngine, writeData, readData} from '../server';
 import {parseMock, toMatchSchema} from '../utils';
 import {KVv1Schema} from './schemas/kv-v1-schema';
@@ -12,7 +13,7 @@ beforeAll(async () => {
     writeData('kv/moresecret', 'kv-v1.json');
 });
 
-test('Reading secret from KV v1', async () => {
+test('KV v1 - Read secret', async () => {
     const res = await vault({
         path: 'kv/secret',
         method: 'read'
@@ -22,7 +23,7 @@ test('Reading secret from KV v1', async () => {
     expect(res.data).toStrictEqual(parseMock('kv-v1.json'));
 });
 
-test("Listing path 'kv' from KV v1", async () => {
+test("KV v1 - Listing path 'kv'", async () => {
     const expectedRes = {keys: ['moresecret', 'secret', 'secretBackup']};
 
     const res = await vault({
@@ -34,7 +35,7 @@ test("Listing path 'kv' from KV v1", async () => {
     expect(res.data).toStrictEqual(expectedRes);
 });
 
-test('Delete secret from KV v1', async () => {
+test('KV v1 - Delete secret', async () => {
     const res = await vault({
         path: 'kv/secret',
         method: 'delete'
@@ -43,7 +44,7 @@ test('Delete secret from KV v1', async () => {
     expect(res.statusCode).toBe(204);
 });
 
-test('Write secret to KV v1', async () => {
+test('KV v1 - Write secret', async () => {
     const res = await vault({
         path: 'kv/secret',
         method: 'write',
@@ -56,4 +57,15 @@ test('Write secret to KV v1', async () => {
 
     expect(writtenData).toMatchSchema(KVv1Schema);
     expect(writtenData.data).toStrictEqual(parseMock('kv-v1.json'));
+});
+
+test('KV v1 - Attempt to Write without data', async () => {
+    async function vaultWriteWithoutData() {
+        await vault({
+            path: 'kv/secret',
+            method: 'write',
+        });
+    }
+
+    await expect(vaultWriteWithoutData).rejects.toThrow(VaultInvalidConfigError);
 });
