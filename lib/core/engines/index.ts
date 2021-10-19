@@ -4,7 +4,7 @@ import {engine as kv2} from './kv2';
 
 // eslint-disable-next-line no-unused-vars
 const engines: Dictionary<Engine> = {
-    kv, kv1: kv, kv2
+    kv, kv1: kv, generic: kv, kv2
 };
 
 export function register(name: string, engine: Engine): void {

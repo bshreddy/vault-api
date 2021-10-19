@@ -37,7 +37,8 @@ export class Vault {
         } else {request(engine, config);}
 
         // Validate the request configs
-        const {axiosMethod, requestPath} = (config as RequestConfig);
+        const {axiosMethod} = (config as RequestConfig);
+        const requestPath = (config as RequestConfig).requestPath?.replace(/^\//, '').replace(/\/$/, '');
 
         if (!axiosMethod || !requestPath) {
             throw new Error(`Vault: Missing required configuration\n${config}`);
