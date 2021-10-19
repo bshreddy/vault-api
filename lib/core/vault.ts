@@ -1,3 +1,4 @@
+import VaultInvalidConfigError from '../helper/invalid-config-error';
 import {Config, DefaultConfig, RequestConfig, VaultFunc, VaultResponse} from '../types';
 import {request} from './engines';
 
@@ -28,7 +29,7 @@ export class Vault {
 
         // Validate the configs
         if (!axios || !address || !apiVersion || !token || !engine) {
-            throw new Error(`Vault: Missing required configuration\n${config}`);
+            throw new VaultInvalidConfigError(config);
         }
 
         // Get the request configs
@@ -41,7 +42,7 @@ export class Vault {
         const requestPath = (config as RequestConfig).requestPath?.replace(/^\//, '').replace(/\/$/, '');
 
         if (!axiosMethod || !requestPath) {
-            throw new Error(`Vault: Missing required configuration\n${config}`);
+            throw new VaultInvalidConfigError(config);
         }
 
         // Send request
