@@ -14,6 +14,7 @@ export interface Config extends DefaultConfig, Dictionary<any> {
     method: string,
     path: string,
     data?: any,
+    version?: number
 }
 
 export default Config;
