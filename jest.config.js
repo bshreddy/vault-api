@@ -15,6 +15,7 @@ module.exports = {
     moduleFileExtensions: ['ts', 'js', 'json'],
     collectCoverage: true,
     coverageDirectory: '<rootDir>/coverage',
+    verbose: true,
     coveragePathIgnorePatterns: [
         'node_modules',
         'dist',

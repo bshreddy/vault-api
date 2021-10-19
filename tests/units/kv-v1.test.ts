@@ -3,6 +3,7 @@ import VaultInvalidConfigError from '../../lib/helper/invalid-config-error';
 import {enableEngine, writeData, readData} from '../server';
 import {parseMock, toMatchSchema} from '../utils';
 import {KVv1Schema} from './schemas/kv-v1-schema';
+import {vaultCmdResponseSchema} from './schemas/vault-response-schema';
 
 expect.extend({toMatchSchema});
 
@@ -55,7 +56,7 @@ test('KV v1 - Write secret', async () => {
 
     const writtenData = readData('kv/secret');
 
-    expect(writtenData).toMatchSchema(KVv1Schema);
+    expect(writtenData).toMatchSchema(vaultCmdResponseSchema);
     expect(writtenData.data).toStrictEqual(parseMock('kv-v1.json'));
 });
 
