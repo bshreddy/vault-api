@@ -1,5 +1,5 @@
 import VaultInvalidConfigError from '../../helper/invalid-config-error';
-import {RequestConfig, Engine, Dictionary} from '../../types';
+import {RequestConfig, Dictionary} from '../../types';
 
 const methods: Dictionary<[
     axiosMethod: string,
@@ -21,10 +21,10 @@ const methods: Dictionary<[
     deleteMetadata: ['delete', 'metadata']
 };
 
-export const engine: Engine = function kv(config: RequestConfig): RequestConfig {
+export function preRequest(config: RequestConfig): RequestConfig {
     const splitPath = config.path.split('/');
     const mount = splitPath[0];
-    const version = (methods[config.method][3])
+    const version = (typeof methods[config.method][3] !== 'undefined')
         ? `?version=${config.version ?? methods[config.method][3]}`
         : '';
 
@@ -36,7 +36,25 @@ export const engine: Engine = function kv(config: RequestConfig): RequestConfig 
 
     if (methods[config.method][2] && !config.data) { throw new VaultInvalidConfigError(config); }
 
-    return config;
-};
+    config.requestData = (config.method === 'write')
+        ? {data: config.data, options: config.options}
+        : config.data;
 
-export default engine;
+    return config;
+}
+
+export function postRequest(config: RequestConfig): RequestConfig {
+    config.response = {
+        ...config.response.data,
+        ...((config.method === 'config' || config.method === 'setConfig') ? {} : config.response.data.data ),
+        ...((config.method === 'config' || config.method === 'setConfig') ? {} : config.response.data.metadata ),
+        statusCode: config.response.status
+    };
+
+    return config;
+}
+
+export default {
+    preRequest,
+    postRequest
+};

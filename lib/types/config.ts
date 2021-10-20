@@ -14,6 +14,9 @@ export interface Config extends DefaultConfig, Dictionary<any> {
     method: string,
     path: string,
     data?: any,
+
+    // KV v2 Specific
+    options?: any,
     version?: number
 }
 

@@ -1,6 +1,6 @@
 import VaultInvalidConfigError from '../helper/invalid-config-error';
 import {Config, DefaultConfig, RequestConfig, VaultFunc, VaultResponse} from '../types';
-import {request} from './engines';
+import {postRequest, preRequest} from './engines';
 
 export class Vault {
     private defaults: DefaultConfig;
@@ -33,21 +33,22 @@ export class Vault {
         }
 
         // Get the request configs
-        if (config.method === 'help') {
-            (config as RequestConfig).requestPath = `${config.path}?help=1`;
-        } else {request(engine, config);}
+        preRequest(engine, config);
 
         // Validate the request configs
-        const {axiosMethod} = (config as RequestConfig);
+        const {axiosMethod, requestData} = (config as RequestConfig);
         const requestPath = (config as RequestConfig).requestPath?.replace(/^\//, '').replace(/\/$/, '');
 
-        if (!axiosMethod || !requestPath) {
+        // console.log();
+        // console.log({valid: (((data && !requestData) || (!data && requestData))), data, requestData});
+
+        if (!axiosMethod || !requestPath || (data && !requestData) || (!data && requestData)) {
             throw new VaultInvalidConfigError(config);
         }
 
         // Send request
         // @ts-ignore Some of the axios methods are not available in the typescript typings
-        const res = await axios({
+        config.response = await axios({
             method: axiosMethod,
             url: `${address}/${apiVersion}/${requestPath}`,
             headers: {
@@ -55,13 +56,11 @@ export class Vault {
                 ...config.headers,
                 ...(config.isVaultRequest ? {'X-Vault-Request': 'true'} : {}),
             },
-            data,
+            data: requestData,
         });
 
         // Return the response
-        return {
-            ...res.data,
-            statusCode: res.status
-        };
+        postRequest(engine, config);
+        return config.response;
     }
 }

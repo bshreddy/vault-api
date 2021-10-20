@@ -1,6 +1,6 @@
 import {Method} from 'axios';
 import VaultInvalidConfigError from '../../helper/invalid-config-error';
-import {RequestConfig, Engine, Dictionary} from '../../types';
+import {RequestConfig, Dictionary} from '../../types';
 
 const axiosMethod: Dictionary<Method> = {
     read: 'get',
@@ -9,14 +9,18 @@ const axiosMethod: Dictionary<Method> = {
     write: 'post'
 };
 
-export const engine: Engine = function kv(config: RequestConfig): RequestConfig {
+export function preRequest(config: RequestConfig): RequestConfig {
     config.requestPath = config.path;
 
     if (config.method === 'list') { config.requestPath = `${config.requestPath}?list=true`; }
     if (config.method === 'write' && !config.data) { throw new VaultInvalidConfigError(config); }
 
     config.axiosMethod = axiosMethod[config.method];
-    return config;
-};
+    config.requestData = config.data;
 
-export default engine;
+    return config;
+}
+
+export default {
+    preRequest
+};
