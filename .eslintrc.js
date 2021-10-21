@@ -85,7 +85,7 @@ module.exports = {
         'no-trailing-spaces': ['error'],
         'object-curly-spacing': ['error', 'never'],
         'max-depth': ['warn', 3],
-        'max-lines': ['warn', 250],
+        'max-lines': ['warn', 300],
         complexity: ['warn', 20],
         'max-statements': ['warn', 25],
         'one-var-declaration-per-line': ['error', 'initializations'],

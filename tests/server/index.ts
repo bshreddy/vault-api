@@ -23,3 +23,4 @@ export async function stopServer(): Promise<void> {
 export * from './enable-engine';
 export * from './write-data';
 export * from './read-data';
+export * from './read-metadata';
