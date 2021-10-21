@@ -14,7 +14,7 @@ beforeAll(async () => {
     writeData('kv/moresecret', 'kv-v1.json');
 });
 
-test('KV v1 - Read secret', async () => {
+test('Read secret', async () => {
     const res = await vault({
         path: 'kv/secret',
         method: 'read'
@@ -24,7 +24,7 @@ test('KV v1 - Read secret', async () => {
     expect(res.data).toStrictEqual(parseMock('kv-v1.json'));
 });
 
-test("KV v1 - Listing path 'kv'", async () => {
+test("Listing path 'kv'", async () => {
     const expectedRes = {keys: ['moresecret', 'secret', 'secretBackup']};
 
     const res = await vault({
@@ -36,7 +36,7 @@ test("KV v1 - Listing path 'kv'", async () => {
     expect(res.data).toStrictEqual(expectedRes);
 });
 
-test('KV v1 - Delete secret', async () => {
+test('Delete secret', async () => {
     const res = await vault({
         path: 'kv/secret',
         method: 'delete'
@@ -45,7 +45,7 @@ test('KV v1 - Delete secret', async () => {
     expect(res.statusCode).toBe(204);
 });
 
-test('KV v1 - Write secret', async () => {
+test('Write secret', async () => {
     const res = await vault({
         path: 'kv/secret',
         method: 'write',
@@ -60,7 +60,7 @@ test('KV v1 - Write secret', async () => {
     expect(writtenData.data).toStrictEqual(parseMock('kv-v1.json'));
 });
 
-test('KV v1 - Attempt to Write without data', async () => {
+test('Attempt to Write without data', async () => {
     async function vaultWriteWithoutData() {
         await vault({
             path: 'kv/secret',
