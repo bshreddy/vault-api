@@ -2,6 +2,6 @@
     "name": "vault-api",
     "secret": "4493f6ee-91ab-5842-9e71-effcb7b380a1",
     "token": "eb2bc571-a63d-5c48-b449-cc8376535db9",
-    "version": "3",
+    "version": "v3",
     "type": "vault"
 }

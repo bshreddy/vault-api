@@ -46,8 +46,8 @@ export function preRequest(config: RequestConfig): RequestConfig {
 export function postRequest(config: RequestConfig): RequestConfig {
     config.response = {
         ...config.response.data,
-        ...((config.method === 'config' || config.method === 'setConfig') ? {} : config.response.data.data ),
-        ...((config.method === 'config' || config.method === 'setConfig') ? {} : config.response.data.metadata ),
+        ...((config.method === 'read') ? config.response.data.data : {}),
+        ...((config.method === 'read') ? config.response.data.metadata : {}),
         statusCode: config.response.status
     };
 
