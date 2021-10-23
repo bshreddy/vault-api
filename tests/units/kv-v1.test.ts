@@ -61,12 +61,12 @@ test('Write secret', async () => {
 });
 
 test('Attempt to Write without data', async () => {
-    async function vaultWriteWithoutData() {
+    async function WriteWithoutData() {
         await vault({
             path: 'kv/secret',
             method: 'write',
         });
     }
 
-    await expect(vaultWriteWithoutData).rejects.toThrow(VaultInvalidConfigError);
+    await expect(WriteWithoutData).rejects.toThrow(VaultInvalidConfigError);
 });

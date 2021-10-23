@@ -1,3 +1,4 @@
+import VaultUnknownEngineError from '../../helper/unknown-engine-error';
 import {RequestConfig, Engine, Dictionary} from '../../types';
 import {default as kv} from './kv';
 import {default as kv2} from './kv2';
@@ -21,13 +22,19 @@ export function register(name: string, engine: Engine): void {
 }
 
 export function get(name: string): Engine {
-    return engines[name];
+    if (!engines[name]) {
+        throw new VaultUnknownEngineError(name);
+    } else {
+        return engines[name];
+    }
 }
 
 export function preRequest(name: string, config: RequestConfig): RequestConfig {
     if (config.method === 'help') {
         config.requestPath = `${config.path}?help=1`;
         return config;
+    } else if (!engines[name]) {
+        throw new VaultUnknownEngineError(name);
     } else {
         return engines[name].preRequest(config);
     }

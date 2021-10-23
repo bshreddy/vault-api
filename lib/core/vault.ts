@@ -17,18 +17,23 @@ export class Vault {
         // Merge the config with the defaults
         config = {...this.defaults, ...config};
 
-        // Convert all functional configs to values and sanatize
+        // Convert all functional configs to values and sanatize and Validate the configs
         config.path = config.path.replace(/^\//, '').replace(/\/$/, '');
         config.apiVersion = config.apiVersion?.replace(/^\//, '').replace(/\/$/, '');
         config.address = typeof config.address === 'function' ? await config.address(config) : config.address;
         config.address = config.address?.replace(/^\//, '').replace(/\/$/, '');
         config.token = typeof config.token === 'function' ? await config.token(config) : config.token;
+
+        const {axios, address, apiVersion, token, data} = config;
+
+        if (!axios || !address || !apiVersion || !token) {
+            throw new VaultInvalidConfigError(config);
+        }
+
         config.engine = typeof config.engine === 'function' ? await config.engine(config) : config.engine;
+        const {engine} = config;
 
-        const {axios, address, apiVersion, token, engine, data} = config;
-
-        // Validate the configs
-        if (!axios || !address || !apiVersion || !token || !engine) {
+        if (!engine) {
             throw new VaultInvalidConfigError(config);
         }
 
@@ -38,9 +43,6 @@ export class Vault {
         // Validate the request configs
         const {axiosMethod, requestData} = (config as RequestConfig);
         const requestPath = (config as RequestConfig).requestPath?.replace(/^\//, '').replace(/\/$/, '');
-
-        // console.log();
-        // console.log({valid: (((data && !requestData) || (!data && requestData))), data, requestData});
 
         if (!axiosMethod || !requestPath || (data && !requestData) || (!data && requestData)) {
             throw new VaultInvalidConfigError(config);
