@@ -21,7 +21,7 @@ const methods: Dictionary<[
     deleteMetadata: ['delete', 'metadata']
 };
 
-export function preRequest(config: RequestConfig): RequestConfig {
+export function preRequest(config: RequestConfig): void {
     const splitPath = config.path.split('/');
     const mount = splitPath[0];
     const version = (typeof methods[config.method][3] !== 'undefined')
@@ -39,19 +39,15 @@ export function preRequest(config: RequestConfig): RequestConfig {
     config.requestData = (config.method === 'write')
         ? {data: config.data, options: config.options}
         : config.data;
-
-    return config;
 }
 
-export function postRequest(config: RequestConfig): RequestConfig {
+export function postRequest(config: RequestConfig): void {
     config.response = {
         ...config.response.data,
         ...((config.method === 'read') ? config.response.data.data : {}),
         ...((config.method === 'read') ? config.response.data.metadata : {}),
         statusCode: config.response.status
     };
-
-    return config;
 }
 
 export default {

@@ -1,5 +1,4 @@
 import DefaultConfig from './default-config';
-import {Dictionary} from '.';
 
 /**
  * @interface Config
@@ -10,7 +9,7 @@ import {Dictionary} from '.';
  * @property {string} [path] - Vault request path.
  * @property {any} [data] - Vault request data.
  */
-export interface Config extends DefaultConfig, Dictionary<any> {
+export interface Config extends DefaultConfig {
     method: string,
     path: string,
     data?: any,

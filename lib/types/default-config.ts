@@ -25,7 +25,7 @@ import {Dictionary} from '.';
  *
  * TODO: Add CA configs
  */
-export interface DefaultConfig {
+export interface DefaultConfig extends Dictionary<any> {
     // Main configs
     axios?: AxiosInstance;
 

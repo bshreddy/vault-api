@@ -8,13 +8,11 @@ const engines: Dictionary<Engine> = {
     kv, kv1: kv, generic: kv, kv2
 };
 
-function defaultPostRequest(config: RequestConfig) {
+function defaultPostRequest(config: RequestConfig): void {
     config.response = {
         ...config.response.data,
         statusCode: config.response.status
     };
-
-    return config;
 }
 
 export function register(name: string, engine: Engine): void {
@@ -31,24 +29,27 @@ export function getEngine(name: string): Engine {
     }
 }
 
-export function preRequest(name: string, config: RequestConfig): RequestConfig {
+export function preRequest(name: string, config: RequestConfig): void {
     name = name.toLowerCase();
 
     if (config.method === 'help') {
         config.requestPath = `${config.path}?help=1`;
         config.axiosMethod = 'get';
-        return config;
     } else if (!engines[name]) {
         throw new VaultUnknownEngineError(name);
     } else {
-        return engines[name].preRequest(config);
+        engines[name].preRequest(config);
     }
 }
 
-export function postRequest(name: string, config: RequestConfig): RequestConfig {
+export function postRequest(name: string, config: RequestConfig): void {
     name = name.toLowerCase();
 
-    return (config.method === 'help')
-        ? defaultPostRequest(config)
-        : engines[name].postRequest?.(config) ?? defaultPostRequest(config);
+    if (config.method === 'help') {
+        defaultPostRequest(config);
+    } else if (engines[name].postRequest) {
+        engines[name].postRequest?.(config);
+    } else {
+        defaultPostRequest(config);
+    }
 }

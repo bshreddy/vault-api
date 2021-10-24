@@ -9,7 +9,7 @@ const axiosMethod: Dictionary<Method> = {
     write: 'post'
 };
 
-export function preRequest(config: RequestConfig): RequestConfig {
+export function preRequest(config: RequestConfig): void {
     config.requestPath = config.path;
 
     if (config.method === 'list') { config.requestPath = `${config.requestPath}?list=true`; }
@@ -17,8 +17,6 @@ export function preRequest(config: RequestConfig): RequestConfig {
 
     config.axiosMethod = axiosMethod[config.method];
     config.requestData = config.data;
-
-    return config;
 }
 
 export default {

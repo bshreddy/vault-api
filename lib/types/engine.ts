@@ -2,8 +2,8 @@
 import RequestConfig from './request-config';
 
 export interface Engine {
-    preRequest: (config: RequestConfig) => RequestConfig;
-    postRequest?: (config: RequestConfig) => RequestConfig;
+    preRequest: (config: RequestConfig) => void;
+    postRequest?: (config: RequestConfig) => void;
 }
 
 export default Engine;

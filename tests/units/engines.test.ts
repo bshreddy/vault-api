@@ -13,7 +13,6 @@ class MockEngine implements Engine {
         return config;
     }
 
-
     postRequest(config: RequestConfig): RequestConfig {
         config.requestData = {key: 'value'};
         return config;
@@ -24,15 +23,21 @@ class MockEngine implements Engine {
 test('Register Mock Engine', () => {
     register('Mock', new MockEngine());
 
+    let config: RequestConfig = {path: 'test', method: 'read'};
     const engine = getEngine('mock');
-    const config: RequestConfig = {path: 'test', method: 'read'};
+
+    engine.preRequest(config);
+    engine.postRequest?.(config);
 
     expect(engine).toBeInstanceOf(MockEngine);
-    expect(engine.preRequest(config).requestPath).toEqual('MockEngine');
-    expect(engine.postRequest?.(config).requestData).toStrictEqual({key: 'value'});
+    expect(config.requestPath).toEqual('MockEngine');
+    expect(config.requestData).toStrictEqual({key: 'value'});
 
-    expect(preRequest('mock', config).requestPath).toEqual('MockEngine');
-    expect(postRequest('mock', config).requestData).toStrictEqual({key: 'value'});
+    config = {path: 'test', method: 'read'};
+    preRequest('mock', config);
+    postRequest('mock', config);
+    expect(config.requestPath).toEqual('MockEngine');
+    expect(config.requestData).toStrictEqual({key: 'value'});
 
     function invalidEngine() {
         getEngine('Invalid');
