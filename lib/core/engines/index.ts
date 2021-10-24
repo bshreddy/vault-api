@@ -18,10 +18,12 @@ function defaultPostRequest(config: RequestConfig) {
 }
 
 export function register(name: string, engine: Engine): void {
-    engines[name] = engine;
+    engines[name.toLowerCase()] = engine;
 }
 
-export function get(name: string): Engine {
+export function getEngine(name: string): Engine {
+    name = name.toLowerCase();
+
     if (!engines[name]) {
         throw new VaultUnknownEngineError(name);
     } else {
@@ -30,8 +32,11 @@ export function get(name: string): Engine {
 }
 
 export function preRequest(name: string, config: RequestConfig): RequestConfig {
+    name = name.toLowerCase();
+
     if (config.method === 'help') {
         config.requestPath = `${config.path}?help=1`;
+        config.axiosMethod = 'get';
         return config;
     } else if (!engines[name]) {
         throw new VaultUnknownEngineError(name);
@@ -41,6 +46,8 @@ export function preRequest(name: string, config: RequestConfig): RequestConfig {
 }
 
 export function postRequest(name: string, config: RequestConfig): RequestConfig {
+    name = name.toLowerCase();
+
     return (config.method === 'help')
         ? defaultPostRequest(config)
         : engines[name].postRequest?.(config) ?? defaultPostRequest(config);
