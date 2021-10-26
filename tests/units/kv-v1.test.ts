@@ -47,14 +47,14 @@ test('Delete secret', async () => {
 
 test('Write secret', async () => {
     const res = await vault({
-        path: 'kv/secret',
+        path: 'kv/writeSecret',
         method: 'write',
         data: parseMock('kv-v1.json')
     });
 
     expect(res.statusCode).toBe(204);
 
-    const writtenData = readData('kv/secret');
+    const writtenData = readData('kv/writeSecret');
 
     expect(writtenData).toMatchSchema(vaultCmdResponseSchema);
     expect(writtenData.data).toStrictEqual(parseMock('kv-v1.json'));
@@ -63,7 +63,7 @@ test('Write secret', async () => {
 test('Attempt to Write without data', async () => {
     async function WriteWithoutData() {
         await vault({
-            path: 'kv/secret',
+            path: 'kv/writeSecret1',
             method: 'write',
         });
     }
