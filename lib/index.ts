@@ -2,12 +2,6 @@ import {defaultConfigs as masterDefaultConfigs} from './config';
 import {Vault} from './core/vault';
 import {DefaultConfig, VaultFunc} from './types';
 
-/**
- * Create an instance of Vault.
- *
- * @param {DefaultConfig} defaultConfig The default config for the instance.
- * @returns {VaultFunc} A new instance of Vault.
- */
 function createInstance(defaultConfigs: DefaultConfig): VaultFunc {
     return new Vault({...masterDefaultConfigs, ...defaultConfigs}).vault;
 }
