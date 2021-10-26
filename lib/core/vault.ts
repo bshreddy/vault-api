@@ -3,6 +3,9 @@ import {Config, DefaultConfig, RequestConfig, VaultFunc, VaultResponse} from '..
 import {postRequest, preRequest} from './engines';
 
 export class Vault {
+    private static methodsWithoutData = ['read', 'list', 'delete', 'help'];
+    private static methodsWithData = ['write'];
+
     private defaults: DefaultConfig;
 
     public vault!: VaultFunc;
@@ -10,7 +13,21 @@ export class Vault {
     constructor(instanceConfig: DefaultConfig) {
         this.defaults = instanceConfig;
 
-        this.vault = Object.assign(this._vault.bind(this), {});
+        const vaultFuncs: any = {};
+
+        Vault.methodsWithoutData.forEach((method) => {
+            vaultFuncs[method] = async (path: string): Promise<any> => {
+                return this._vault({method, path});
+            };
+        });
+
+        Vault.methodsWithData.forEach((method) => {
+            vaultFuncs[method] = async (path: string, data: any): Promise<any> => {
+                return this._vault({method, path, data});
+            };
+        });
+
+        this.vault = Object.assign(this._vault.bind(this), vaultFuncs);
     }
 
     private async _vault(config: Config): Promise<VaultResponse> {
