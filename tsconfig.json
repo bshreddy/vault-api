@@ -18,5 +18,15 @@
         "**/*.spec.ts",
         "dist",
         "tests/**/*"
-    ]
+    ],
+    "typedocOptions": {
+        "entryPoints": ["./lib"],
+        "out": "docs",
+        "entryPointStrategy": "expand",
+        "lightHighlightTheme": "github-light",
+        "darkHighlightTheme": "github-dark",
+        "logLevel": "Verbose",
+        "hideGenerator": true,
+        "hideLegend": true
+    }
 }
