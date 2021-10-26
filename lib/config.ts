@@ -9,8 +9,9 @@ export const defaultConfigs: DefaultConfig = {
     address: async () => process.env.VAULT_ADDR,
     apiVersion: 'v1',
     async token(config: Config): Promise<string | undefined> {
-        if (config.tokenPath) { return fs.readFileSync(config.tokenPath, 'utf8'); }
-        return process.env.VAULT_TOKEN;
+        return (config.tokenPath)
+            ? fs.readFileSync(config.tokenPath, 'utf8')
+            : process.env.VAULT_TOKEN;
     },
     engine: getEngineName,
     headers: {},
