@@ -9,8 +9,10 @@ node_modules
 package-lock.json
 dist
 docs
+wiki
 coverage
 vault-api-*.tgz
+package
 
 # VSCode generated files
 **/.vscode

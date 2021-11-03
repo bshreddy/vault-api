@@ -29,8 +29,7 @@
     "lint": "eslint .",
     "pretest": "npm run lint && npm run build",
     "test": "jest --detectOpenHandles",
-    "prepublish": "npm run build",
-    "prepack": "npm run build"
+    "prepare": "rm -rf dist/ && tsc --project tsconfig.prod.json"
   },
   "dependencies": {
     "axios": "^0.21.4"
