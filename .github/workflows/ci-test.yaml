@@ -27,10 +27,15 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Run Tests
+      - name: Run Tests (pull_request)
         uses: mattallty/jest-github-action@v1
+        if: ${{ github.event_name == 'pull_request' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run Tests (push)
+        if: ${{ github.event_name == 'push' }}
+        run: npm test
 
       - name: Pack Build Artifacts
         if: ${{ github.event_name == 'push' }}
