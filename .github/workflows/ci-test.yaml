@@ -1,0 +1,56 @@
+name: CI Build & Test
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+jobs:
+  test:
+    name: CI Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 'lts/*'
+
+      - name: Install Vault
+        run: |
+          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+          sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+          sudo apt-get update
+          sudo apt-get install vault jq -y
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Tests
+        uses: mattallty/jest-github-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pack Build Artifacts
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          npm pack
+          echo "PKG_NAME=$(jq -r ".name" package.json)-$(jq -r ".version" package.json).tgz" >> $GITHUB_ENV
+
+      - name: Share Build Artifact
+        uses: actions/upload-artifact@v2
+        if: ${{ github.event_name == 'push' }}
+        with:
+          path: ${{ env.PKG_NAME }}
+          if-no-files-found: error
+
+    services:
+      vault:
+        image: vault:latest
+        ports:
+          - 8200:8200
+        env:
+          VAULT_DEV_ROOT_TOKEN_ID: vaultGHCITestToken
+          VAULT_DEV_LISTEN_ADDRESS: 0.0.0.0:8200
+        options: --cap-add=IPC_LOCK
