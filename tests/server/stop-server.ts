@@ -2,11 +2,9 @@ import {VaultServer} from '.';
 
 export function stopServer(vaultServer: VaultServer | null): Promise<void> {
     return new Promise((resolve, reject) => {
-        if (!vaultServer || vaultServer.server.killed) { resolve(); }
+        if (vaultServer?.server?.killed) { resolve(); }
 
-        console.log(vaultServer?.server);
-
-        vaultServer?.server.on('close', () => {
+        vaultServer?.server?.on('close', () => {
             vaultServer = null;
             delete process.env.VAULT_ADDR;
             delete process.env.TOKEN;
@@ -16,6 +14,6 @@ export function stopServer(vaultServer: VaultServer | null): Promise<void> {
             resolve();
         });
 
-        if (!vaultServer?.server.kill()) { reject(); }
+        if (!vaultServer?.server?.kill()) { reject(); }
     });
 }
