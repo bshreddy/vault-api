@@ -1,0 +1,40 @@
+name: CI Build & Test
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+jobs:
+  test:
+    name: CI Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 'lts/gallium'
+
+      - name: Install Vault
+        run: |
+          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+          sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+          sudo apt-get update
+          sudo apt-get install vault -y
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Tests
+        run: npm test
+
+      - name: Pack build artifacts
+        run: npm pack
+
+      - name: Share build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          path: ${{npm pkg get name}}-${{npm pkg get version}}.tgz
+          if-no-files-found: error
