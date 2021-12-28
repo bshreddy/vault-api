@@ -1,0 +1,7 @@
+{
+    "name": "vault-api",
+    "secret": "21ee70d4-53a3-532a-a506-e3a49cc0c6e2",
+    "token": "a1ac5c1f-0030-5bc8-bdb1-fe82e24694ee",
+    "version": "v5",
+    "type": "vault"
+}

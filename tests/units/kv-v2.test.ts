@@ -109,6 +109,22 @@ test('Attempting to Write without data', async () => {
     await expect(writeWithoutData).rejects.toThrow(VaultInvalidConfigError);
 });
 
+test("Patch 'secret/test_data'", async () => {
+    const res = await vault({
+        path: 'secret/test_data',
+        method: 'write',
+        data: parseMock('kv-v2_v5.json')
+    });
+
+    expect(res).toMatchSchema(KVv2WriteSchema);
+
+    const writtenData = readData('secret/test_data', true);
+
+    expect(writtenData).toMatchSchema(vaultKv2CmdResponseSchema);
+    expect(writtenData.data.data).toStrictEqual(parseMock('kv-v2_v5.json'));
+    expect(writtenData.data.metadata).toStrictEqual(res.data);
+});
+
 test("Delete Latest Version of 'secret/test_data'", async () => {
     const res = await vault({
         path: 'secret/test_data',
@@ -212,11 +228,16 @@ test("Read Secret Metadata of 'secret/test_data'", async () => {
     expect(writtenData.data).toStrictEqual(res.data);
 });
 
+
 test("Create/Update Metadata of 'secret/test_data'", async () => {
     const data = {
         max_versions: 5,
         cas_required: false,
-        delete_version_after: '3h25m19s'
+        delete_version_after: '3h25m19s',
+        custom_metadata: {
+            owner: 'SaiHemanthBR',
+            mission_critical: 'false'
+        },
     };
 
     const res = await vault({
@@ -234,7 +255,8 @@ test("Create/Update Metadata of 'secret/test_data'", async () => {
     writtenData = {
         max_versions: writtenData.data.max_versions,
         cas_required: writtenData.data.cas_required,
-        delete_version_after: writtenData.data.delete_version_after
+        delete_version_after: writtenData.data.delete_version_after,
+        custom_metadata: writtenData.data.custom_metadata,
     };
     expect(writtenData).toEqual(data);
 });

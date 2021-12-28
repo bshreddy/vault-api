@@ -11,6 +11,7 @@ const methods: Dictionary<[
     setConfig: ['post', 'config', true],
     read: ['get', 'data', false, 0],
     write: ['post', 'data', true],
+    patch: ['patch', 'data', true],
     'delete': ['delete', 'data'],
     deleteVersions: ['post', 'delete', true],
     undeleteVersions: ['post', 'undelete', true],
@@ -33,6 +34,14 @@ export function preRequest(config: RequestConfig): void {
     config.requestPath = (config.method === 'config' || config.method === 'setConfig')
         ? `${mount}/${methods[config.method][1]}`
         : `${mount}/${methods[config.method][1]}/${config.path}${version}`;
+
+    config.headers = {
+        ...((config.method === 'patch')
+            ? {'Content-Type': 'application/merge-patch+json'}
+            : {}
+        ),
+        ...config.headers
+    };
 
     if (methods[config.method][2] && !config.data) { throw new VaultInvalidConfigError(config); }
 

@@ -1,5 +1,5 @@
 import VaultInvalidConfigError from '../helper/invalid-config-error';
-import {Config, DefaultConfig, RequestConfig, VaultFunc, VaultResponse} from '../types';
+import {Config, DefaultConfig, Dictionary, RequestConfig, VaultFunc, VaultResponse} from '../types';
 import {postRequest, preRequest} from './engines';
 
 export class Vault {
@@ -16,14 +16,14 @@ export class Vault {
         const vaultFuncs: any = {};
 
         Vault.methodsWithoutData.forEach((method) => {
-            vaultFuncs[method] = async (path: string): Promise<any> => {
-                return this._vault({method, path});
+            vaultFuncs[method] = async (path: string, config: Dictionary<any>): Promise<any> => {
+                return this._vault({...config, method, path});
             };
         });
 
         Vault.methodsWithData.forEach((method) => {
-            vaultFuncs[method] = async (path: string, data: any): Promise<any> => {
-                return this._vault({method, path, data});
+            vaultFuncs[method] = async (path: string, data: any, config: Dictionary<any>): Promise<any> => {
+                return this._vault({...config, method, path, data});
             };
         });
 
