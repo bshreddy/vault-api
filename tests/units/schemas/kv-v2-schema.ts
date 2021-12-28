@@ -9,6 +9,7 @@ export const vaultKv2CmdResponseSchema = vaultCmdResponseSchema.keys({
             deletion_time: Joi.string().isoDate().allow('').required(),
             destroyed: Joi.boolean().required(),
             version: Joi.number().required(),
+            custom_metadata: Joi.object().required().allow(null),
         }).required(),
     }).required(),
 });
@@ -27,6 +28,7 @@ export const KVv2ReadSchema = vaultResponseSchema.keys({
         deletion_time: Joi.string().isoDate().allow('').required(),
         destroyed: Joi.boolean().required(),
         version: Joi.number().required(),
+        custom_metadata: Joi.object().required().allow(null),
     })
 });
 
@@ -36,6 +38,7 @@ export const KVv2WriteSchema = vaultResponseSchema.keys({
         deletion_time: Joi.string().isoDate().allow('').required(),
         destroyed: Joi.boolean().required(),
         version: Joi.number().required(),
+        custom_metadata: Joi.object().required().allow(null),
     }),
     statusCode: Joi.number().valid(200).required()
 });
@@ -60,6 +63,7 @@ export const KVv2ReadMetadataCmdSchema = vaultCmdResponseSchema.keys({
             deletion_time: Joi.string().isoDate().allow('').required(),
             destroyed: Joi.boolean().required(),
         }).required(),
+        custom_metadata: Joi.object().required().allow(null),
     }),
 });
 
@@ -77,5 +81,6 @@ export const KVv2ReadMetadataSchema = vaultResponseSchema.keys({
             deletion_time: Joi.string().isoDate().allow('').required(),
             destroyed: Joi.boolean().required(),
         }).required(),
+        custom_metadata: Joi.object().required().allow(null),
     }),
 });
