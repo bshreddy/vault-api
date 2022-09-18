@@ -14,6 +14,7 @@ export const helpSchema = Joi.object({
             }).required(),
         }).required(),
         paths: Joi.object().pattern(Joi.string(), Joi.object()).required(),
+        components: Joi.object().pattern(Joi.string(), Joi.object()).required(),
     }).required(),
     see_also: Joi.object().allow(null),
     statusCode: Joi.number().valid(200).required(),

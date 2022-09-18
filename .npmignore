@@ -3,7 +3,6 @@
 # code
 lib
 tests
-types
 .eslintignore
 .eslintrc.js
 .gitignore

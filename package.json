@@ -1,6 +1,6 @@
 {
   "name": "vault-api",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Axios-like NodeJS API for Hashicorp Vault.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
