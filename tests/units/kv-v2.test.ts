@@ -211,7 +211,9 @@ test('List Secrets', async () => {
     });
 
     expect(res).toMatchSchema(KVv2ListSchema);
-    expect(res.data.keys).toStrictEqual(expectedKeys);
+    expect(res.data).not.toBeNull();
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    expect(res.data!.keys).toStrictEqual(expectedKeys);
 });
 
 test("Read Secret Metadata of 'secret/test_data'", async () => {
